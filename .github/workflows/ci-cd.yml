@@ -98,7 +98,7 @@ jobs:
         run: |
           ls -la ./
           ls -la ./ansible
-          docker-compose run ansible-cli-docker ansible-vault decrypt /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt --output /app/ansible/webhdfs_address.txt
+          docker-compose run ansible-cli-docker "ls -la && ansible-vault decrypt /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt --output /app/ansible/webhdfs_address.txt"
           export DVC_WEBHDFS_ADDRESS=$(cat ./ansible/webhdfs_address.txt)
           dvc remote add --local remote_webhdfs ${DVC_WEBHDFS_ADDRESS}
           rm -rf ./ansible
