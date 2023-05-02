@@ -96,9 +96,9 @@ jobs:
 
       - name: Prepare DVC for remote storage
         run: |
+          ls -la ./
           ls -la ./ansible
           docker-compose run ansible-cli-docker ansible-vault decrypt /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt --output /app/ansible/webhdfs_address.txt
-          ls -la ./ansible
           export DVC_WEBHDFS_ADDRESS=$(cat ./ansible/webhdfs_address.txt)
           dvc remote add --local remote_webhdfs ${DVC_WEBHDFS_ADDRESS}
           rm -rf ./ansible
