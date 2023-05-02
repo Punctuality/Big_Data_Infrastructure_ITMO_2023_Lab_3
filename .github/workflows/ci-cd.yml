@@ -91,10 +91,12 @@ jobs:
       - name: Prepare ANSIBLE_PASS
         run: |
           mkdir -p ./ansible
+          chmod 750 ./ansible
           echo ${{ secrets.ANSIBLE_PASS }} > ./ansible/ansible_pass.txt
 
       - name: Prepare DVC for remote storage
         run: |
+          ls -la ./ansible
           docker-compose run ansible-cli-docker ansible-vault decrypt /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt --output /app/ansible/webhdfs_address.txt
           ls -la ./ansible
           export DVC_WEBHDFS_ADDRESS=$(cat ./ansible/webhdfs_address.txt)
