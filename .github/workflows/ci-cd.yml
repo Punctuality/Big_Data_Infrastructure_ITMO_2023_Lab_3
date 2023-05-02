@@ -99,7 +99,7 @@ jobs:
         run: pip install dvc dvc-s3 dvc-webhdfs
 
       - name: Prepare DVC for remote storage
-        run: dvc remote add --local remote_webhdfs ${{ DVC_WEBHDFS_ADDRESS }}
+        run: dvc remote add --local remote_webhdfs ${DVC_WEBHDFS_ADDRESS}
 
       - name: Pull data and model from DVC remote storage
         run: dvc pull -r remote_webhdfs
