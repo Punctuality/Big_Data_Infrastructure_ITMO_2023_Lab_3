@@ -93,14 +93,10 @@ jobs:
           mkdir -p ./ansible
           echo ${{ secrets.ANSIBLE_PASS }} > ./ansible/ansible_pass.txt
 
-      - name: Decode webhdfs address
-        run: |
-          DVC_WEBHDFS_ADDRESS=$(docker-compose run ansible-cli-docker ansible-vault view /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt)
-          echo "::set-output name=DVC_WEBHDFS_ADDRESS::$DVC_WEBHDFS_ADDRESS"
-          rm ./ansible/ansible_pass.txt
-
       - name: Prepare DVC for remote storage
-        run: dvc remote add --local remote_webhdfs ${DVC_WEBHDFS_ADDRESS}
+        run: |
+          export DVC_WEBHDFS_ADDRESS=$(docker-compose run ansible-cli-docker ansible-vault view /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt)
+          dvc remote add --local remote_webhdfs ${DVC_WEBHDFS_ADDRESS}
 
       - name: Pull data and model from DVC remote storage
         run: dvc pull -r remote_webhdfs
