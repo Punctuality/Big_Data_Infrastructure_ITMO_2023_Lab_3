@@ -85,6 +85,9 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
+      - name: Install DVC
+        run: pip install dvc dvc-s3 dvc-webhdfs
+
       - name: Prepare ANSIBLE_PASS
         run: |
           mkdir -p ./ansible
@@ -93,12 +96,8 @@ jobs:
       - name: Decode webhdfs address
         run: |
           DVC_WEBHDFS_ADDRESS=$(docker-compose run ansible-cli-docker ansible-vault view /app/ansible/webhdfs_address.vault --vault-password-file /app/ansible/ansible_pass.txt)
-          echo "DVC_WEBHDFS_ADDRESS=$DVC_WEBHDFS_ADDRESS" >> $GITHUB_ENV
           echo "::set-output name=DVC_WEBHDFS_ADDRESS::$DVC_WEBHDFS_ADDRESS"
           rm ./ansible/ansible_pass.txt
-
-      - name: Install DVC
-        run: pip install dvc dvc-s3 dvc-webhdfs
 
       - name: Prepare DVC for remote storage
         run: dvc remote add --local remote_webhdfs ${DVC_WEBHDFS_ADDRESS}
