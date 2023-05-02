@@ -17,6 +17,14 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server --console-address ":9001" --address ":9000" /data
 
+  ansible-cli-docker:
+    container_name: ansible-cli-docker
+    platform: linux/x86_64
+    image: haxorof/ansible-core:v2.14-alpine
+    volumes:
+      - ./:/app
+
+
   fake-news-classifier:
     image: fake_news_classificator:latest
     container_name: fake-news-classfier
