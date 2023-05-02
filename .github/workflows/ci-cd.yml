@@ -86,7 +86,9 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Prepare ANSIBLE_PASS
-        run: echo ${{ secrets.ANSIBLE_PASS }} > ./ansible/ansible_pass.txt
+        run: |
+          mkdir -p ./ansible
+          echo ${{ secrets.ANSIBLE_PASS }} > ./ansible/ansible_pass.txt
 
       - name: Decode webhdfs address
         run: |
